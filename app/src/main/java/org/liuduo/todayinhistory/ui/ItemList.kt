@@ -7,10 +7,14 @@ import androidx.compose.ui.Modifier
 import org.liuduo.todayinhistory.data.Item
 
 @Composable
-fun ItemList(itemList: List<Item>, modifier: Modifier = Modifier) {
+fun ItemList(itemList: List<Item>,
+             onItemClicked: (Item) -> Unit,
+             modifier: Modifier = Modifier) {
     LazyColumn {
         items(itemList) { item ->
-            ItemCard(item = item)
+            ItemCard(item = item, onClick = {
+                onItemClicked(it)
+            })
         }
     }
 }

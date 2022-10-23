@@ -25,7 +25,7 @@ class MainViewModel: ViewModel() {
     init {
         viewModelScope.launch {
             val api = RetrofitHelper.getInstance().create(API::class.java)
-            val results = api.getItems(0, appId, appSecret)
+            val results = api.getItems(1, appId, appSecret)
             _uiState.update { currentState ->
                 currentState.copy(
                     itemList = results.body()?.data ?: listOf()

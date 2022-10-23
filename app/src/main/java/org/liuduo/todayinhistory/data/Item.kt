@@ -5,5 +5,6 @@ data class Item(
     val title: String,
     val year: String,
     val month: Int,
-    val day: Int
+    val day: Int,
+    val details: String
 )

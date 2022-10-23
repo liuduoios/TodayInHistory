@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,8 +17,15 @@ import coil.compose.AsyncImage
 import org.liuduo.todayinhistory.data.Item
 
 @Composable
-fun ItemCard(item: Item, modifier: Modifier = Modifier) {
-    Card(modifier = modifier.padding(8.dp), elevation = 4.dp) {
+fun ItemCard(item: Item, modifier: Modifier = Modifier, onClick: (Item) -> Unit) {
+    Card(
+        modifier = modifier.padding(8.dp)
+            .selectable(
+                selected = false,
+                onClick = { onClick(item) }
+            ),
+        elevation = 4.dp
+    ) {
         Column {
             AsyncImage(
                 model = item.picUrl,
