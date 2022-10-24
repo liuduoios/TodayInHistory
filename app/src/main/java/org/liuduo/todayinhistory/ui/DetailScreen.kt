@@ -14,16 +14,16 @@ import androidx.compose.ui.unit.sp
 import org.liuduo.todayinhistory.data.Item
 
 @Composable
-fun DetailScreen(item: Item, modifier: Modifier = Modifier) {
+fun DetailScreen(title: String, details: String, modifier: Modifier = Modifier) {
     Column {
         Text(
-            text = item.title ?: "title",
+            text = title,
             fontSize = 26.sp,
             modifier = Modifier.padding()
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = item.details ?: "detail",
+            text = details,
             fontSize = 18.sp,
             modifier = Modifier.padding()
         )

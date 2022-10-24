@@ -10,13 +10,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import org.liuduo.todayinhistory.ui.theme.TodayInHistoryTheme
+import org.liuduo.todayinhistory.viewmodels.MainViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val viewModel = MainViewModel()
+
         setContent {
             TodayInHistoryTheme {
-                TodayInHistoryApp()
+                TodayInHistoryApp(viewModel = viewModel)
             }
         }
     }

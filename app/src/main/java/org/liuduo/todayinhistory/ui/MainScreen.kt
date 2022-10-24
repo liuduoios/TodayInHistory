@@ -13,14 +13,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import org.liuduo.todayinhistory.data.Item
 import org.liuduo.todayinhistory.ui.DetailScreen
 import org.liuduo.todayinhistory.ui.ItemList
 import org.liuduo.todayinhistory.ui.ListScreen
+import org.liuduo.todayinhistory.ui.components.navigateWithArguments
 import org.liuduo.todayinhistory.ui.theme.TodayInHistoryTheme
 import org.liuduo.todayinhistory.viewmodels.MainViewModel
 
@@ -62,9 +65,17 @@ fun TodayInHistoryApp(
     val uiState by viewModel.uiState.collectAsState()
 
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = TodayInHistoryScreen.valueOf(
-        backStackEntry?.destination?.route ?: TodayInHistoryScreen.List.name
-    )
+
+    var currentScreen: TodayInHistoryScreen
+    val route = backStackEntry?.destination?.route
+    if (route == null || route!!.contains("list")) {
+        currentScreen = TodayInHistoryScreen.valueOf(TodayInHistoryScreen.List.name)
+    } else {
+        currentScreen = TodayInHistoryScreen.valueOf(TodayInHistoryScreen.Detail.name)
+    }
+//    val currentScreen = TodayInHistoryScreen.valueOf(
+//        backStackEntry?.destination?.route ?: TodayInHistoryScreen.List.name
+//    )
 
     Scaffold(
         topBar = {
@@ -77,20 +88,23 @@ fun TodayInHistoryApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = TodayInHistoryScreen.List.name,
+            startDestination = "list",
             modifier = modifier.padding(innerPadding)
         ) {
-            composable(route = TodayInHistoryScreen.List.name) {
+            composable(route = "list") {
                 ListScreen(
                     uiState = uiState,
                     onItemClicked = { item ->
-                        navController.navigate(TodayInHistoryScreen.Detail.name)
+                        navController.navigate(
+                            route = "detail/${item.title}/${item.details}"
+                        )
                     }
                 )
             }
-            composable(route = TodayInHistoryScreen.Detail.name) {
+            composable(route = "detail/{title}/{details}") { backStackEntry ->
                 DetailScreen(
-                    item = uiState.itemList.firstOrNull() ?: Item("", "", "0", 0, 0, "")
+                    title = backStackEntry.arguments?.getString("title") ?: "",
+                    details = backStackEntry.arguments?.getString("details") ?: ""
                 )
             }
         }

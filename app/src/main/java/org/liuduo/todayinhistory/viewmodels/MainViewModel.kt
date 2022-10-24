@@ -22,13 +22,15 @@ class MainViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(UIState())
     val uiState: StateFlow<UIState> = _uiState.asStateFlow()
 
+    var item: Item = Item("", "123", "", 0, 0, "123")
+
     init {
         viewModelScope.launch {
             val api = RetrofitHelper.getInstance().create(API::class.java)
             val results = api.getItems(1, appId, appSecret)
             _uiState.update { currentState ->
                 currentState.copy(
-                    itemList = results.body()?.data ?: listOf()
+                    itemList = results.body()?.data ?: emptyList()
                 )
             }
             Log.d("MainViewModel: ", results.body().toString())
